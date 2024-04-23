@@ -31,6 +31,19 @@ namespace HotelProject.WebApi
             builder.Services.AddScoped<ITestimonialDal, EfTestimonialDal>();
             builder.Services.AddScoped<ITestimonialService, TestimonialManager>();
 
+            builder.Services.AddAutoMapper(typeof(Program));
+
+
+            // Enable cors
+            builder.Services.AddCors(opt =>
+            {
+                opt.AddPolicy("OtelApiCors", opts =>
+                {
+                    opts.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+                });
+            }
+            );
+
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -44,6 +57,8 @@ namespace HotelProject.WebApi
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
+            app.UseCors("OtelApiCors");
 
             app.UseAuthorization();
 
